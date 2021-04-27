@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+
+{% block content %}
+<link rel="stylesheet" type="text/css" href="static/css/profile.css"/>
+
+<div class="hero-body">
+  <div class="container has-text-centered">
+    <h1 class="title">
+      Welcome, {{ current_user.name }}!
+    </h1>
+    <h1 class="title">
+      Here are your profile settings !
+    </h1>
+    <div class="column is-6 is-offset-3">
+          <div class="box">
+                  <div class="field">
+                      <div class="control">
+                        <label class="label" for="email">Email</label>
+                        <input class="input is-large" value="{{ current_user.email }}" name="email" readonly>
+                      </div>
+                  </div>
+
+                  <div class="field">
+                      <div class="control">
+                        <label class="label"for="username">Username</label>
+                        <input class="input is-large" value="{{ current_user.name }}" name="username"readonly>
+                      </div>
+                  </div>
+          </div>
+      </div>
+      <div class="mg">
+        <div class="container">
+          <div class="columns is-centered">
+              <div class="box">
+                <nav class="breadcrumb is-medium" aria-label="breadcrumbs">
+                    <ul>
+                      <li>
+                        <a href="{{ url_for('profile.edit') }}">
+                          <span class="icon is-small">
+                            <i class="fas fa-pen-square blue" aria-hidden="true"></i>
+                          </span>
+                          <span>Edit account settings</span>
+                        </a>
+                      </li>
+                      <li>
+                        <a href="{{ url_for('profile.delete') }}">
+                          <span class="icon is-small">
+                            <i class="fas fa-times-circle red" aria-hidden="true"></i>
+                          </span>
+                          <span>Delete account</span>
+                        </a>
+                      </li>
+                    </ul>
+                  </nav>
+                </div>
+            </div>     
+        </div>
+      </div>
+  
+  </div>
+</div>
+{% endblock %}

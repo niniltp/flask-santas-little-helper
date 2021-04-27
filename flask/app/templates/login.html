@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+
+{% block content %}
+<link rel="stylesheet" type="text/css" href="static/css/auth.css"/>
+
+<div class="hero-body">
+    <div class="container has-text-centered">
+        <div class="column is-6 is-offset-3">
+            <h3 class="title">Login</h3>
+            <div class="box">
+                {% with messages = get_flashed_messages() %}
+                {% if messages %}
+                    <div class="notification is-danger">
+                        {{ messages[0] }}
+                    </div>
+                {% endif %}
+                {% endwith %}
+                <form method="POST" action="/login">
+                            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+                    <div class="field">
+                        <div class="control">
+                            <input class="input is-large" type="email" name="email" placeholder="Email" autofocus="" required>
+                        </div>
+                    </div>
+
+                    <div class="field">
+                        <div class="control">
+                            <input class="input is-large" type="password" name="password" minlength="1" maxlength="30" placeholder="Password" required>
+                        </div>
+                    </div>
+                    <div class="field captcha-div">
+                        <div class="control captcha">
+                        {{ captcha_html(captcha) | safe }}
+                        </div>
+                    </div>
+                    <button class="button is-block is-info is-large is-fullwidth">Login</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

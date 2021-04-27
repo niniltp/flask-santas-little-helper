@@ -1,0 +1,9 @@
+Flask
+Flask-Login
+Flask-SQLAlchemy
+Flask-WTF
+Flask-Bcrypt
+Flask-Talisman
+Jinja2
+Livereload
+flask_simple_captcha

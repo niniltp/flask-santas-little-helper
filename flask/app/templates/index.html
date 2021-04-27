@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="hero-body">
+  <div class="container has-text-centered">
+    <h1 class="title">
+      Santa's Little Helper !
+    </h1>
+    <h2 class="subtitle">
+      You want to organise Xmas with your friends?<br/>
+      This is where it takes place!
+    </h2>
+    {% if current_user.is_authenticated %}
+    <a href="{{ url_for('room.index') }}" class="button is-info">
+      Get started!
+    </a>
+    {% else %}
+    <a href="{{ url_for('main.signup') }}" class="button is-info">
+      Get started!
+    </a>
+    {% endif %}
+  </div>
+</div>
+
+{% endblock %}

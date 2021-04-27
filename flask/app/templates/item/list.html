@@ -1,0 +1,171 @@
+{% extends "base.html" %}
+
+
+{% block content %}
+<head>
+<link rel="stylesheet" type="text/css" href="static/css/list_.css"/>
+</head>
+<div class="hero-body">
+  <div class="container has-text-centered">
+    <div class="box room-box">
+      <h3 class="room-name">Room Name :</h3>
+      <h2 class="room-title"> {{ room.name }} </h2>
+    </div>
+  <div class="container has-text-centered">
+    {% for assoc in room.users %}
+    {% if loop.index0 % 2 == 0 %}
+    <div class="columns">
+    {% endif %}
+      <div class="column">
+        <div class="box main-box grey">
+          <div class="box is-large ">
+              <i class="fas fa-gift fa-2x"></i>
+              <h3 class="field">
+                {{ assoc.user.email }} ({{assoc.user.name}})&nbsp&nbsp
+                {% if current_user.id != assoc.user.id %}
+                  {% if current_user.isAdmin(room.id) %}
+                  <form method="POST" action="/room/kick">
+                    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+                    <input type="hidden" name="room_id" value="{{ room.id }}">
+                    <input type="hidden" name="user_id" value="{{ assoc.user.id }}">
+                    <button class="fabutton btn">
+                      <i class="fas fa-user-slash red"></i>
+                    </button>
+                  </form> 
+                  {% endif %}
+                {% else %}
+                <i class="you">(You)</i>
+                {% endif %}   
+              </h3>                         
+              {% if assoc.role_id == 0 %}
+              <h3 class="field red">Administrator</h3>
+              {% else %}
+              <h3 class="field">Member</h3>              
+              {% endif %}
+          </div>
+          {% if room.getUserItems(assoc.user.id) %}
+          <div class="box is-large">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>Name</th>
+                  <th>Quantity</th>
+                  <th>Price</th>
+                  <th>URL</th>
+                  {% if current_user.id != assoc.user.id %}
+                  <th>Gifter</th>
+                  {% endif %}
+                  <th></th>
+                  <th></th>
+                  <th></th>
+                </tr>
+              </thead>
+              <tbody>
+                {% set counter = namespace(value=0) %}
+                {% for item in room.getUserItems(assoc.user.id) %}
+                <tr>
+                  <th>{{ counter.value + 1 }}</th>
+                  <td>{{ item.name }} </td>
+                  {% if item.quantity %}
+                    <td>{{ item.quantity }}</td>
+                    {% else %}
+                    <td><i class="fas fa-times-circle red"></i></td>
+                  {% endif %}
+                  {% if item.price %}
+                    <td>{{ item.price }}</td>
+                    {% else %}
+                    <td><i class="fas fa-times-circle red"></i></td>
+                  {% endif %}
+                    {% if item.url %}
+                    <td>
+                      <a href="{{ item.url }}" target="_blank">
+                        <i class="fas fa-link blue"></i>
+                      </a>
+                    </td>
+                    {% else %}
+                    <td><i class="fas fa-times-circle red"></i></td>
+                  {% endif %}
+                  {% if current_user.id != assoc.user.id %}
+                    {% if item.gid %}
+                      <td><i class="fas fa-check-circle green"></i></td>
+                      {% else %}
+                      <td><i class="fas fa-times-circle red"></i></td>
+                    {% endif %}
+                  {% endif %}
+                  <td></td>
+                  {% if current_user.id == assoc.user.id %}
+                  <td>
+                    <a href="{{ url_for('item.edit', room_id=room.id, item_id=item.id) }}" class="fabutton">
+                      <i class="fas fa-edit fa-lg blue"></i>
+                    </a>
+                  </td>
+                  <td>
+                    <form method="POST" action="/room/list/item/delete">
+                      <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+                        <button class="fabutton btn">  
+                          <i class="fas fa-trash fa-lg red"></i>
+                        </button>
+                      <input type="hidden" name="room_id" value="{{ room.id }}">
+                      <input type="hidden" name="item_id" value="{{ item.id }}">
+                    </form>
+                  </td>
+                {% else %}
+                  {% if not item.gid %}
+                  <td>
+                    <form method="POST" action="/room/list/item/gift">
+                      <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+                        <button class="fabutton btn">  
+                          <i class="fas fa-gift fa-lg green"></i>
+                        </button>
+                      <input type="hidden" name="room_id" value="{{ room.id }}">
+                      <input type="hidden" name="item_id" value="{{ item.id }}">
+                    </form>
+                  </td>
+                  <td></td>
+                  {% elif item.gid == current_user.id %}
+                  <td> 
+                    <form method="POST" action="/room/list/item/gift">
+                      <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+                        <button class="fabutton btn">  
+                          <i class="fas fa-times-circle fa-lg red"></i>
+                          
+                        </button>
+                      <input type="hidden" name="room_id" value="{{ room.id }}">
+                      <input type="hidden" name="item_id" value="{{ item.id }}">
+                  </form>
+                </td>
+
+                  <td></td>
+                  {% elif item.gid == current_user.id %}
+                  <td><i class="fas fa-check-circle green"></i></td>
+                  {% endif %}
+                {% endif %}
+                </tr>
+                {% set counter.value = counter.value + 1 %}
+                {% endfor %}
+              </tbody>
+            </table>  
+          </div>
+          {% else %}
+          <div class="box is-large">
+            <span class="red">This list is empty</span>
+          </div>
+          {% endif %}
+          {% if current_user.id == assoc.user.id %}
+            <a href="{{ url_for('.create', room_id=room.id) }}" class="box is-large">
+              <i class="fas fa-plus-circle fa-2x green"></i>
+            </a>
+          {% endif %}
+        </div>
+      </div>
+    {% if loop.index0 % 2 == 1 or loop.last %}
+    </div>
+    {% endif %}
+    {% endfor %} 
+  </div>
+  </div>
+</div>
+
+
+{% endblock %}

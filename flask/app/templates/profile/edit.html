@@ -1,0 +1,80 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="hero-body">
+    <div class="container has-text-centered">
+        <div class="columns">
+            <div class="column is-6">
+            <h3 class="title">Edit profile settings</h3>
+            <div class="box">
+                {% with messages = get_flashed_messages() %}
+                {% if messages %}
+                    {% if "#1" in messages[0] %}
+                    <div class="notification is-danger">
+                        {{ messages[0][2:] }}
+                    </div>
+                    {% endif %}
+                {% endif %}
+                {% endwith %}
+                <form method="POST" action="/profile/edit/settings">
+                  <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+                  <div class="field">
+                    <div class="control">
+                          <input class="input is-large" type="email" name="email" placeholder="{{ current_user.email }}" autofocus="">
+                      </div>
+                    </div>
+                    <div class="field">
+                        <div class="control">
+                            <input class="input is-large" type="text" name="name" minlength="2" maxlength="20" placeholder="{{ current_user.name }}">
+                        </div>
+                    </div>
+                    <div class="field">
+                      <div class="control">
+                          <input class="input is-large" type="password" name="password" minlength="1" maxlength="30" placeholder="Password" required>
+                      </div>
+                  </div>
+                    <div class="field">
+                        <div class="control">
+                            <input class="input is-large" type="password" name="confirm_password" minlength="1" maxlength="30" placeholder="Confirm password" required>
+                        </div>
+                    </div>
+                    <button class="button is-block is-info is-large is-fullwidth">Confirm</button>
+                </form>                
+            </div>
+        </div>
+        <div class="column is-6">
+            <h3 class="title">Edit profile password</h3>
+            <div class="box">
+                {% with messages = get_flashed_messages() %}
+                {% if messages %}
+                    {% if "#2" in messages[0] %}
+                    <div class="notification is-danger">
+                        {{ messages[0][2:] }}
+                    </div>
+                    {% endif %}
+                {% endif %}
+                {% endwith %}
+                <form method="POST" action="/profile/edit/password">
+		            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+                    <div class="field">
+                        <div class="control">
+                            <input class="input is-large" type="password" name="password" placeholder="Current password" minlength="1" maxlength="30" autofocus="" required>
+                        </div>
+                    </div>
+                    <div class="field">
+                        <div class="control">
+                            <input class="input is-large" type="password" name="new_password" placeholder="New password" minlength="8" maxlength="30" required>
+                        </div>
+                    </div>
+                    <div class="field">
+                        <div class="control">
+                            <input class="input is-large" type="password" name="confirm_password" placeholder="Confirm new password" minlength="8" maxlength="30" required>
+                        </div>
+                    </div>
+                    <button class="button is-block is-info is-large is-fullwidth">Confirm</button>
+                </form>                
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

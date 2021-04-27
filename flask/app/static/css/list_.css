@@ -1,0 +1,61 @@
+.column.my-class {
+  display: block;
+  overflow: hidden; 
+}
+
+.box-icon {
+  text-align: center;
+}
+
+.pad {
+  margin:0;
+  padding:0;
+}
+
+.field {
+    font-weight: bold;
+}
+.room-box {
+  font-family:Impact, Geneva, Tahoma, sans-serif;
+  font-size: 1.5em;
+  border: turquoise;
+}
+
+.name-title {
+  font-family:Impact, Geneva, Tahoma, sans-serif;
+  font-weight: bold;
+  font-size: 1.5em;
+}
+
+.box .room-name {
+  font-weight: bold;
+  color:black;
+}
+
+.box .room-title {
+  color:blue;
+  font-size: 1.3em;
+  font-weight: bold;
+}
+
+.columns, .column {
+  overflow: visible;
+}
+
+.you {
+  font-style: italic;
+  color: turquoise;
+  display: inline-block
+}
+
+
+.btn {
+  cursor:pointer; 
+  padding: 0; 
+  border: none; 
+  background: none; 
+}
+
+.btn:focus {
+  outline: none;
+}

@@ -1,0 +1,25 @@
+.spread {
+    display: inline-flex; 
+}
+
+.mg-b {
+    margin-bottom: 1.5em;
+}
+.box-icon {
+    text-align: center;
+}
+
+.mg {
+    margin-bottom: 3em;
+}
+
+.btn {
+    cursor:pointer; 
+    padding: 0; 
+    border: none; 
+    background: none; 
+}
+
+.btn:focus {
+    outline: none;
+}

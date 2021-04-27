@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+      {% if not config['FLASK_LIVERELOAD'] %}
+        <base href="http://localhost:5000/">
+      {% else %}
+        <base href="http://localhost:5500/">
+      {% endif %}
+    <link rel="icon" type="image/x-icon" href="static/favicon.ico"/>
+    <title>Santa's Little Helper</title>
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.2/css/bulma.min.css" />
+    <link rel="stylesheet" type="text/css" href="static/css/base.css"/>
+</head>
+<body>
+    <div>
+        <nav class="navbar " role="navigation" aria-label="main navigation">
+                <div class="navbar-brand ">
+                  <a class="navbar-item " href="{{ url_for('main.index') }}">
+                    <img src="static/img/favicon.png" width="40" height="28">
+                  </a>              
+                    <a role="button" id="nav-toggle" class="navbar-burger burger " for="nav-toggle-state" aria-label="menu" aria-expanded="false" data-target="nav-menu">
+                        <span aria-hidden="true"></span>
+                        <span aria-hidden="true"></span>
+                        <span aria-hidden="true"></span>
+                    </a>
+                </div>
+              
+                <div id="nav-menu" class="navbar-menu ">
+                  <div class="navbar-start">
+                    <a href="{{ url_for('main.index') }}" class="navbar-item  white">
+                      Home
+                    </a>    
+                    {% if current_user.is_authenticated %}          
+                    <div class="navbar-item has-dropdown is-hoverable ">
+                        <a class="navbar-link ">
+                          Account
+                        </a>                
+                        <div id="nav-menu-account" class="navbar-dropdown">
+                          <a href="{{ url_for('profile.index') }}" class="navbar-item">
+                            Show
+                          </a>
+                          <a href="{{ url_for('profile.edit') }}" class="navbar-item">
+                            Edit
+                          </a>
+                          <a href="{{ url_for('profile.delete') }}" class="navbar-item">
+                            Delete
+                          </a>
+                        </div>
+                    </div>       
+                    <div class="navbar-item has-dropdown is-hoverable ">
+                      <a class="navbar-link ">
+                        Room
+                      </a>              
+                      <div id="nav-menu-room" class="navbar-dropdown">
+                        <a href="{{ url_for('room.index') }}" class="navbar-item">
+                          Show
+                          </a>
+                        <a href="{{ url_for('room.create') }}" class="navbar-item">
+                          Create
+                        </a>
+                        <a href="{{ url_for('room.join') }}" class="navbar-item">
+                          Join
+                        </a>
+                      </div>
+                    </div>
+                    {% endif %}
+                  </div>
+              
+                  <div class="navbar-end">
+                    <div class="navbar-item">
+                      <div class="buttons">
+                        {% if not current_user.is_authenticated %}
+                        <a href="{{ url_for('main.signup') }}" class="button is-info">
+                          <strong>Sign up</strong>
+                        </a>
+                        <a href="{{ url_for('main.login') }}" class="button is-light">
+                            Log in
+                        </a>
+                        {% endif %}
+                        {% if current_user.is_authenticated %}
+                        <form id="form-logout" method="POST" action="/logout">
+                            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+                            <button class="button is-light is-danger">Log out</button>
+                        </form>
+                        {% endif %}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+            </nav>
+        <section class="hero is-primary is-fullheight">
+            {% block content %}
+            {% endblock %}
+        </section> 
+        </div>
+    <script type="text/javascript" defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
+    <script type="text/javascript" src="static/js/base.js"></script>
+</body>
+
+</html>

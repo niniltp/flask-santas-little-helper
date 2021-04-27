@@ -1,0 +1,161 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="hero-body">
+    <div class="container has-text-centered">
+        <div class="columns">
+            <div class="column is-6">
+            <h3 class="title">Edit Room's name</h3>
+            <div class="box">
+                {% with messages = get_flashed_messages() %}
+                {% if messages %}
+                    {% if "#1" in messages[0] %}
+                    <div class="notification is-danger">
+                        {{ messages[0][2:] }}
+                    </div>
+                    {% endif %}
+                {% endif %}
+                {% endwith %}
+                <form method="POST" action="/room/edit/name">
+                    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+                    <div class="field">
+                        <div class="control">
+                            <input class="input is-large" type="text" name="name" placeholder="Room's name" value="{{ room.name[:-2] }}" minlength="4" maxlength="20" autofocus="" required>
+                        </div>
+                    </div>
+                    {% if room.secret %}
+                    <div class="field">
+                        <div class="control">
+                            <input class="input is-large" type="password" name="current_secret" placeholder="Room's secret" required>
+                        </div>
+                    </div>
+                    <div class="field">
+                        <div class="control">
+                            <input class="input is-large" type="password" name="confirm_secret" placeholder="Confirm secret" required>
+                        </div>
+                    </div>
+                    {% endif %}
+                    <input type="hidden" name="room_id" value="{{ room.id }}"/>
+                    <button class="button is-block is-info is-large is-fullwidth">Confirm</button>
+                </form>                
+            </div>
+        </div>
+        <div class="column is-6">
+            {% if room.secret %}
+            <h3 class="title">Edit Room's password</h3>
+            <div class="box">
+                {% with messages = get_flashed_messages() %}
+                {% if messages %}
+                    {% if "#2" in messages[0] %}
+                    <div class="notification is-danger">
+                        {{ messages[0][2:] }}
+                    </div>
+                    {% endif %}
+                {% endif %}
+                {% endwith %}
+                <form method="POST" action="/room/edit/password">
+                    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+                    <div class="field">
+                        <div class="control">
+                            <input class="input is-large" type="password" name="password" placeholder="User's password" minlength="1" maxlength="30" autofocus="" required>
+                        </div>
+                    </div>
+                    <div class="field">
+                        <div class="control">
+                            <input class="input is-large" type="password" name="current_secret" placeholder="Room's current secret" required> 
+                        </div>
+                    </div>
+                    <div class="field">
+                        <div class="control">
+                            <input class="input is-large" type="password" name="new_secret" placeholder="Room's new secret" required>
+                        </div>
+                    </div>
+
+                    <div class="field">
+                        <div class="control">
+                            <input class="input is-large" type="password" name="confirm_secret" placeholder="Confirm new secret" required>
+                        </div>
+                    </div>
+                    <input type="hidden" name="room_id" value="{{ room.id }}">
+                    <button class="button is-block is-info is-large is-fullwidth">Confirm</button>
+                </form>                
+            </div>
+            {% else %}
+            <h3 class="title">Add a Room's password</h3>
+            <div class="box">
+                {% with messages = get_flashed_messages() %}
+                {% if messages %}
+                    {% if "#2" in messages[0] %}
+                    <div class="notification is-danger">
+                        {{ messages[0][2:] }}
+                    </div>
+                    {% endif %}
+                {% endif %}
+                {% endwith %}
+                <form method="POST" action="/room/edit/add-password">
+                    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+                    <div class="field">
+                        <div class="control">
+                            <input class="input is-large" type="password" name="password" placeholder="User's Password" minlength="1" maxlength="30" autofocus="" required>
+                        </div>
+                    </div>
+                    <div class="field">
+                        <div class="control">
+                            <input class="input is-large" type="password" name="new_secret" placeholder="Room's new secret" required> 
+                        </div>
+                    </div>
+                    
+                    <div class="field">
+                        <div class="control">
+                            <input class="input is-large" type="password" name="confirm_secret" placeholder="Confirm new secret" required>
+                        </div>
+                    </div>
+                    <input type="hidden" name="room_id" value="{{ room.id }}">
+                    <button class="button is-block is-info is-large is-fullwidth">Confirm</button>
+                </form>                
+            </div>
+            {% endif %}
+        </div>
+        </div>
+        {% if room.secret %}
+        <div class="container has-text-centered">
+            <div class="column is-6 is-offset-3">
+              <h3 class="title">Remove Room's secret</h3>
+              <div class="box">
+                  {% with messages = get_flashed_messages() %}
+                  {% if messages %}
+                      {% if "#3" in messages[0] %}
+                      <div class="notification is-danger">
+                          {{ messages[0][2:] }}
+                      </div>
+                      {% endif %}
+                  {% endif %}
+                  {% endwith %}
+                  <form method="POST" action="/room/edit/remove-password">
+                    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+                    <div class="field">
+                        <div class="control">
+                            <input class="input is-large" type="password" name="password" placeholder="User's Password" minlength="1" maxlength="30" autofocus="" required>
+                        </div>
+                    </div>
+                    <div class="field">
+                        <div class="control">
+                            <input class="input is-large" type="password" name="current_secret" placeholder="Room's secret" required> 
+                        </div>
+                    </div>
+                    
+                    <div class="field">
+                        <div class="control">
+                            <input class="input is-large" type="password" name="confirm_secret" placeholder="Confirm secret" required>
+                        </div>
+                    </div>
+                    <input type="hidden" name="room_id" value="{{ room.id }}">
+                    <button class="button is-block is-info is-large is-fullwidth">Confirm</button>
+                </form>                
+              </div>
+          </div>
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

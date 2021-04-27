@@ -1,0 +1,53 @@
+.grey {
+    background-color: gainsboro;
+}
+.red {
+    color:red;
+}
+.blue {
+    color:blue;
+}
+.green {
+    color: green;
+}
+.brown {
+    color: brown;
+}
+.black {
+    color:black
+}
+.fulll-width{
+    width: 100%;
+}
+.white {
+    color:white;
+}
+
+.bg-red {
+    background-color: red;
+}
+.white {
+    color:white;
+}
+
+.navbar-link {color:turquoise}
+
+.navbar, .navbar-start, .navbar-menu{
+    background-color: black;
+}
+
+.navbar-link:hover {
+    color:turquoise;
+}
+
+#nav-toggle-account{
+    color: black
+}
+
+.navbar-item:hover {
+    font-weight: bold;
+}
+
+.navbar-link .navbar-item:hover{
+    color:red;
+}

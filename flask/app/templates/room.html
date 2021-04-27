@@ -1,0 +1,120 @@
+{% extends "base.html" %}
+
+
+{% block content %}
+<link rel="stylesheet" type="text/css" href="static/css/room.css"/>
+
+<div class="hero-body">
+  <div class="container has-text-centered">
+    <div class="mg">
+      <div class="container">
+        <div class="columns is-centered">
+            <div class="box">
+              <nav class="breadcrumb is-medium" aria-label="breadcrumbs">
+                  <ul>
+                    <li>
+                      <a href="{{ url_for('.create') }}">
+                        <span class="icon is-small">
+                          <i class="fas fa-plus-circle green" aria-hidden="true"></i>
+                        </span>
+                        <span>Create Room</span>
+                      </a>
+                    </li>
+                    <li>
+                      <a href="{{ url_for('.join') }}">
+                        <span class="icon is-small">
+                          <i class="fas fa-gift blue" aria-hidden="true"></i>
+                        </span>
+                        <span>Join Room</span>
+                      </a>
+                    </li>
+                  </ul>
+                </nav>
+              </div>
+          </div>     
+      </div>
+    </div>
+
+    {% if current_user.rooms %}
+    {% for assoc in current_user.rooms %}
+      <div class="columns">       
+          <a href="{{ url_for('item.list_', room_id=assoc.room.id) }}" class="column is-11">
+          <div class="box is-large active">
+            <div>
+                <span class="title is-5 has-text-primary">Name:</span>
+                <span class="title is-5 has-text-black">&nbsp;&nbsp;{{assoc.room.name}}</span>    
+            </div>    
+            <div>
+              <span class="title is-5 has-text-primary">Secret:</span>
+              {% if assoc.room.secret %}
+              <span class="title is-5 has-text-success">&nbsp;&nbsp;Yes</span>
+              {% else %}
+              <span class="title is-5 has-text-danger">&nbsp;&nbsp;No</span>
+              {% endif %}
+            </div>
+            <div>
+              <span class="title is-5 has-text-primary">Role:</span>
+              {% if not assoc.role_id %}
+              <span class="title is-5 has-text-danger">&nbsp;&nbsp;Administrator</span>    
+              {% else %}
+              <span class="title is-5 has-text-black">&nbsp;&nbsp;Member</span>    
+              {% endif %}
+            </div>  
+            <div>
+              <span class="title is-5 has-text-primary">Participants:</span>
+              <span class="title is-5 has-text-black">&nbsp;&nbsp;{{assoc.room.getNbUsers()}}</span>    
+          </div>   
+          </div>
+        </a>
+        {% if not assoc.role_id %}
+        <div class="column spread">
+          <div class="box box-icon">
+            <div class="mg-b">
+                <a href="{{ url_for('.edit', room_id=assoc.room.id) }}" class="fabutton">
+                  <i class="fas fa-edit fa-2x blue" aria-hidden="true"></i>
+                </a>
+            </div>
+            <div>
+              <form method="POST" action="/room/delete">
+                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+                  <button class="fabutton fa-2x btn">
+                    <i class="fas fa-trash red" aria-hidden="true"></i>
+                  </button>
+                <input type="hidden" name="room_id" value="{{ assoc.room.id }}">
+              </form>
+            </div>
+          </div>
+        </div>
+        {% else %}
+        <div class="column spread">
+          <div class="box box-icon">
+            <form method="POST" action="/room/exit">
+              <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+                <button class="fabutton fa-2x btn">
+                  <i class="fas fa-door-open red" aria-hidden="true"></i>
+                </button>
+              <input type="hidden" name="room_id" value="{{ assoc.room.id }}">
+            </form>
+            </div>
+          </div>
+        {% endif %}
+      </div>       
+    {% endfor %}
+    {% else %}
+    <div class="container has-text-centered">
+      <div class="column is-4 is-offset-4">
+      <article class="message is-medium is-info">
+        <div class="message-header">
+          <p>Info</p>
+        </div>
+        <div class="message-body">
+          You have not created or joined any Room yet.<br>
+        </div>
+      </article>
+    </div>
+  </div>
+    {% endif %}
+
+  </div>
+</div>
+{% endblock %}

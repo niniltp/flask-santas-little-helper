@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    {% if not config['FLASK_LIVERELOAD'] %}
+    <base href="http://localhost:5000/">
+    {% else %}
+    <base href="http://localhost:5500/">
+    {% endif %}
+    <link rel="icon" type="image/x-icon" href="static/signal.ico"/>
+    <title>Error</title>
+    <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@600;900&display=swap">
+    <script text="text/javascript" src="https://kit.fontawesome.com/4b9ba14b0f.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" type="text/css" href="static/css/error.css"/>
+</head>
+<body>
+    <div class="mainbox">
+    <i class="far fa-question-circle fa-spin"></i>
+        <div class="msg">
+            Maybe this page moved? Got deleted? Is hiding out in quarantine? Never existed in the first place?<p>Let's go <a href="{{ url_for('main.index') }}">home</a> and try from there.</p>
+        </div>
+    </div>
+    </body>
+</html>

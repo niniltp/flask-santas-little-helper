@@ -1,0 +1,16 @@
+.captcha-div {
+    display: flex;
+    width: 50%;
+    margin: 0 auto;
+}
+
+.captcha {
+    display: block; 
+}
+
+.captcha input {
+    display: block;
+    text-align: center;
+    min-width: 100%;
+    color:red;
+}
